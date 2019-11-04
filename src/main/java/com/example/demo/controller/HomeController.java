@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,21 +30,29 @@ public class HomeController {
     public HomeController(CityMapper cityMapper){
         this.cityMapper = cityMapper;
     }
+
+    /**
+     *get方法
+     * @return City
+     */
     @RequestMapping(value = "get",method = RequestMethod.GET)
     public City get(){
         return cityMapper.findById("id","1");
     }
+
     @RequestMapping(value = "getAll",method = RequestMethod.GET)
     public List<City> getAll(){
         return  cityMapper.getAll();
     }
+
     @UserLoginToken
     @RequestMapping(value = "getUser",method = RequestMethod.GET)
     public User getUser(){
         return  userService.findUserById("1");
     }
+
     @RequestMapping(value = "login",method = RequestMethod.POST)
-    public Object login(@RequestBody User user) throws JSONException {
+    public Object login(@Valid @RequestBody User user) throws JSONException {
         VimData<String> data= new VimData<String>();
         User userForBase=userService.findUserById(user.getId());
         if(userForBase==null){

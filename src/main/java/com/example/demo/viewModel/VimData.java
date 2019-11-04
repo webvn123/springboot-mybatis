@@ -1,5 +1,8 @@
 package com.example.demo.viewModel;
 
+/**
+ * @author Administrator
+ */
 public class VimData<T> {
     private String message;
 
