@@ -4,6 +4,10 @@ package com.example.demo.viewModel;
  * @author Administrator
  */
 public class VimData<T> {
+    public VimData(){
+        this.setSuccess(true);
+        this.setMessage("");
+    }
     private String message;
 
     public String getMessage() {

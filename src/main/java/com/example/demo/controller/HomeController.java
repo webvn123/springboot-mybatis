@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.City;
 import com.example.demo.domain.User;
 import com.example.demo.jwt.JwtCommon;
 import com.example.demo.jwt.UserLoginToken;
-import com.example.demo.mapper.CityMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import com.example.demo.viewModel.VimData;
@@ -21,40 +19,24 @@ import java.util.List;
 
 @RestController
 public class HomeController {
-    private final CityMapper cityMapper;
     @Autowired
     private UserService userService;
 
     private JwtCommon tokenService = new JwtCommon();
 
-    public HomeController(CityMapper cityMapper){
-        this.cityMapper = cityMapper;
-    }
 
-    /**
-     *get方法
-     * @return City
-     */
-    @RequestMapping(value = "get",method = RequestMethod.GET)
-    public City get(){
-        return cityMapper.findById("id","1");
-    }
 
-    @RequestMapping(value = "getAll",method = RequestMethod.GET)
-    public List<City> getAll(){
-        return  cityMapper.getAll();
-    }
 
     @UserLoginToken
     @RequestMapping(value = "getUser",method = RequestMethod.GET)
     public User getUser(){
-        return  userService.findUserById("1");
+        return  userService.selectByPrimaryKey("1");
     }
 
     @RequestMapping(value = "login",method = RequestMethod.POST)
     public Object login(@Valid @RequestBody User user) throws JSONException {
         VimData<String> data= new VimData<String>();
-        User userForBase=userService.findUserById(user.getId());
+        User userForBase=userService.selectByPrimaryKey(user.getId());
         if(userForBase==null){
             data.setSuccess(false);
             data.setMessage("用户不存在");

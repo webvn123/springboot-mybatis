@@ -32,7 +32,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if(!(object instanceof HandlerMethod)){
             return true;
         }
-        JSONObject json = new JSONObject();
         HandlerMethod handlerMethod=(HandlerMethod)object;
         Method method=handlerMethod.getMethod();
         //检查是否有passtoken注释，有则跳过认证
@@ -48,49 +47,25 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (userLoginToken.required()) {
                 // 执行认证
                 if (token == null) {
-                    json.put("message","无token，请重新登录");
-                    json.put("success",false);
-                    PrintWriter out = httpServletResponse.getWriter();
-                    out.write(json.toString());
-                    out.flush();
-                    out.close();
-                    return true;
+                    throw new Exception("无token,请重新登录");
                 }
                 // 获取 token 中的 user id
                 String userId;
                 try {
                     userId = JWT.decode(token).getAudience().get(0);
                 } catch (JWTDecodeException j) {
-                    json.put("message","token无效");
-                    json.put("success",false);
-                    PrintWriter out = httpServletResponse.getWriter();
-                    out.write(json.toString());
-                    out.flush();
-                    out.close();
-                    return true;
+                    throw new Exception("token无效");
                 }
-                User user = userService.findUserById(userId);
+                User user = userService.selectByPrimaryKey(userId);
                 if (user == null) {
-                    json.put("message","用户不存在，请重新登录");
-                    json.put("success",false);
-                    PrintWriter out = httpServletResponse.getWriter();
-                    out.write(json.toString());
-                    out.flush();
-                    out.close();
-                    return true;
+                    throw new Exception("用户不存在，请重新登录");
                 }
                 // 验证 token
                 JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
                 try {
                     jwtVerifier.verify(token);
                 } catch (Exception e) {
-                    json.put("message","token无效");
-                    json.put("success",false);
-                    PrintWriter out = httpServletResponse.getWriter();
-                    out.write(json.toString());
-                    out.flush();
-                    out.close();
-                    return true;
+                    throw new Exception("token无效");
                 }
                 return true;
             }
