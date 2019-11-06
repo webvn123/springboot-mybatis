@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * @author Administrator
+ */
 @RestController
 public class UserController {
     @Autowired

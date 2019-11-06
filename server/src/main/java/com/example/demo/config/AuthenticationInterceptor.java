@@ -41,8 +41,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-        //检查有没有需要用户权限的注解
-        if (method.isAnnotationPresent(UserLoginToken.class)) {
             UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
             if (userLoginToken.required()) {
                 // 执行认证
@@ -69,7 +67,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 }
                 return true;
             }
-        }
         return true;
     }
 
