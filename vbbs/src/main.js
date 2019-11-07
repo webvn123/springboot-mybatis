@@ -12,6 +12,19 @@ Vue.use(element)
 Vue.prototype.$api = api
 Vue.config.productionTip = false
 
+router.beforeEach((to,from,next)=>{
+  if(to.name == "login"){
+    next()
+    return
+  }
+  var token = window.localStorage.getItem("token")
+  if(token == "" || token == null){
+    next({path:'/login'})
+    return
+  } 
+  next();
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

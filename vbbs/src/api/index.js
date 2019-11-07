@@ -41,7 +41,7 @@ function apiAxios(method, url, params, response) {
   }).then(function (res) {
     response(res);
   }).catch(function (err) {
-    response(err);
+    Message.error({message:err.message})
   })
 }
 
