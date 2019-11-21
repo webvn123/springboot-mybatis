@@ -19,6 +19,7 @@ router.beforeEach((to,from,next)=>{
   }
   var token = window.localStorage.getItem("token")
   if(token == "" || token == null){
+	element.Message.error("未登录")
     next({path:'/login'})
     return
   } 

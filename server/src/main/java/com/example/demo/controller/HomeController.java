@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.LoginUser;
 import com.example.demo.domain.User;
 import com.example.demo.jwt.JwtCommon;
+import com.example.demo.jwt.PassToken;
 import com.example.demo.jwt.UserLoginToken;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
@@ -27,16 +29,16 @@ public class HomeController {
 
 
 
-    @UserLoginToken
     @RequestMapping(value = "getUser",method = RequestMethod.GET)
     public User getUser(){
         return  userService.selectByPrimaryKey("1");
     }
 
     @RequestMapping(value = "login",method = RequestMethod.POST)
-    public Object login(@Valid @RequestBody User user) throws JSONException {
-        VimData<String> data= new VimData<String>();
-        User userForBase=userService.selectByPrimaryKey(user.getId());
+    @PassToken
+    public Object login(@Valid @RequestBody LoginUser user) throws JSONException {
+        VimData<LoginUser> data= new VimData<LoginUser>();
+        User userForBase=userService.login(user);
         if(userForBase==null){
             data.setSuccess(false);
             data.setMessage("用户不存在");
@@ -48,7 +50,10 @@ public class HomeController {
                 return data;
             }else {
                 String token = tokenService.getToken(userForBase);
-                data.setData(token);
+                LoginUser loginUser = new LoginUser();
+                loginUser.setToken(token);
+                loginUser.setUsername(userForBase.getNickname());
+                data.setData(loginUser);
                 return data;
             }
         }

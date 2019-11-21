@@ -41,8 +41,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-            UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
-            if (userLoginToken.required()) {
                 // 执行认证
                 if (token == null) {
                     throw new Exception("无token,请重新登录");
@@ -66,8 +64,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     throw new Exception("token无效");
                 }
                 return true;
-            }
-        return true;
     }
 
     @Override

@@ -1,9 +1,16 @@
 <template>
   <div>
+  <el-col>
+  <div style="height:70px;background-color:rgb(84, 92, 100)">
+    <div class="sys">
+    {{userName}}
+	  <el-button size="small" type="primary" class="lgout">退出</el-button></div>
+    </div>
+  </el-col>
+  <el-col :span=3>
     <el-menu
       :default-active="activeIndex2"
       class="el-menu-demo"
-      mode="horizontal"
       @select="handleSelect"
       background-color="#545c64"
       text-color="#fff"
@@ -24,6 +31,7 @@
         </el-menu-item>
       </template>
     </el-menu>
+	</el-col>
   </div>
 </template>
 
@@ -33,18 +41,15 @@ export default {
     return {
       activeIndex: "1",
       activeIndex2: "1",
+      userName:JSON.parse(window.localStorage.getItem("user")).username,
       menuItems: [
         {
           title: "菜单一",
           path: "/",
           children: [
             {
-              title: "子菜单一",
+              title: "登录",
               path: "/login"
-            },
-            {
-              title: "子菜单二",
-              path: "/"
             }
           ]
         },
@@ -53,13 +58,9 @@ export default {
           path: "/",
           children: [
             {
-              title: "子菜单二",
-              path: "/index"
-            },
-            {
-              title: "子菜单二",
+              title: "首页",
               path: "/"
-            }
+            },
           ]
         }
       ]
@@ -74,3 +75,15 @@ export default {
   }
 };
 </script>
+<style scoped>
+  .sys{
+    float: right;
+    text-align: center;
+    padding: 10px;
+    color: antiquewhite
+  }
+  .lgout{
+    margin-left: 10px;
+    padding: 10px;
+  }
+</style>

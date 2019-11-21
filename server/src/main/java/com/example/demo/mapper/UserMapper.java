@@ -1,5 +1,6 @@
 package com.example.demo.mapper;
 
+import com.example.demo.domain.LoginUser;
 import com.example.demo.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +16,6 @@ public interface UserMapper {
     List<User> selectAll();
 
     int updateByPrimaryKey(User record);
+
+    User login(LoginUser user);
 }

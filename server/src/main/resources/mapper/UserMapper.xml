@@ -16,10 +16,21 @@
     <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
     <result column="expireDate" jdbcType="TIMESTAMP" property="expiredate" />
   </resultMap>
+  <sql id="BaseSql">
+    id, username, `password`, sex, age, countryCode, telPhone, email, nickName,
+    statuCode, levelCode, createDate, expireDate
+  </sql>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from user
     where id = #{id,jdbcType=VARCHAR}
   </delete>
+  <select id="login" parameterType="com.example.demo.domain.LoginUser" resultMap="BaseResultMap">
+    select
+    <include refid="BaseSql"/>
+    from user
+    where username = #{username}
+    and password = #{password}
+  </select>
   <insert id="insert" parameterType="com.example.demo.domain.User">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
