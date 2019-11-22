@@ -1,16 +1,18 @@
 package com.example.jwtsecurity.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.jwtsecurity.common.CommonResult;
 import com.example.jwtsecurity.common.JwtTokenUtil;
 import com.example.jwtsecurity.domain.User;
 import com.example.jwtsecurity.dto.LoginUserParam;
-import com.example.jwtsecurity.mapper.UserMapper;
 import com.example.jwtsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -32,7 +34,8 @@ public class HomeController {
     }
 
     @RequestMapping(value = "get",method = RequestMethod.GET)
-    public void test(){
-
+    public Map<String, Object> test(){
+       return userService.getMap(new QueryWrapper<User>().inSql("username","'问问'"));
+        //return userService.selectAll();
     }
 }
